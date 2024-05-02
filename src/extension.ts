@@ -22,14 +22,38 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		if(typeof value == "string"){
-			const getnum = parseInt(value);
-			vscode.window.showInformationMessage('Hello World from numconversion!:' + getnum.toString(16));
+			const num = inputnum(value);
+			output(num);
 		}
-
 	});
+
 
 	context.subscriptions.push(disposable);
 }
 
+function hasLeading0x(hexString: string): boolean {
+    return /^0x/i.test(hexString);
+}
+
+function hasLeading0b(hexString: string): boolean {
+    return /^0b/i.test(hexString);
+}
+
+function inputnum(input: string):number{
+	if(hasLeading0x(input)){
+		return parseInt(input.slice(2),16);
+	}
+	else if(hasLeading0b(input)){
+		return parseInt(input.slice(2),2);
+	}
+	else {
+		return parseInt(input);
+	}
+}
+
+function output(inputnum: number) {
+	const outputtxt = '0x' + inputnum.toString(16) + ' ' + inputnum.toString(10) + " 0b" + inputnum.toString(2);
+	vscode.window.showInformationMessage('result:' + outputtxt);
+}
 // This method is called when your extension is deactivated
 export function deactivate() {}
