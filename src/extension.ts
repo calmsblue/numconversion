@@ -45,7 +45,8 @@ function hasLeading0b(hexString: string): boolean {
 function isDecimal(hexString: string): boolean {
     return /^\d*$/i.test(hexString);
 }
-function inputNum(input: string):number{
+
+export function inputNum(input: string):number{
 	if(hasLeading0x(input)){
 		// 入力が16進数の場合
 		return parseInt(input.slice(2),16);
@@ -74,7 +75,7 @@ function outputNum(inputnum: number) {
 	vscode.window.showInformationMessage('result:' + outputtxt);
 }
 
-function formatNum(inputnum: number) {
+export function formatNum(inputnum: number) {
 	let outputtxt : string;
 	if (isNaN(inputnum)){
 		outputtxt = 'input error';
