@@ -16,11 +16,14 @@ export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('numconversion.helloWorld', async () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
+
+		// 引数を取る
 		const value = await vscode.window.showInputBox({
 			prompt: '引数を入力してください',
 			placeHolder: '例: hello world'
 		});
 
+		// 文字列が入力されている場合
 		if(typeof value == "string"){
 			const num = inputnum(value);
 			output(num);
@@ -41,12 +44,15 @@ function hasLeading0b(hexString: string): boolean {
 
 function inputnum(input: string):number{
 	if(hasLeading0x(input)){
+		// 入力が16進数の場合
 		return parseInt(input.slice(2),16);
 	}
 	else if(hasLeading0b(input)){
+		// 入力が2進数の場合
 		return parseInt(input.slice(2),2);
 	}
 	else {
+		// それ以外の場合(数値変換できない場合はNaN)
 		return parseInt(input);
 	}
 }
