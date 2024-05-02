@@ -25,8 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// 文字列が入力されている場合
 		if(typeof value == "string"){
-			const num = inputnum(value);
-			output(num);
+			const num = inputNum(value);
+			outputNum(num);
 		}
 	});
 
@@ -42,7 +42,10 @@ function hasLeading0b(hexString: string): boolean {
     return /^0b/i.test(hexString);
 }
 
-function inputnum(input: string):number{
+function isDecimal(hexString: string): boolean {
+    return /^\d*$/i.test(hexString);
+}
+function inputNum(input: string):number{
 	if(hasLeading0x(input)){
 		// 入力が16進数の場合
 		return parseInt(input.slice(2),16);
@@ -51,15 +54,34 @@ function inputnum(input: string):number{
 		// 入力が2進数の場合
 		return parseInt(input.slice(2),2);
 	}
-	else {
-		// それ以外の場合(数値変換できない場合はNaN)
+	else if(isDecimal(input)){
+		// 入力が10進数の場合
 		return parseInt(input);
+	}
+	else {
+		// それ以外の場合(NaN)
+		return NaN;
 	}
 }
 
-function output(inputnum: number) {
-	const outputtxt = '0x' + inputnum.toString(16) + ' ' + inputnum.toString(10) + " 0b" + inputnum.toString(2);
+function outputNum(inputnum: number) {
+	// if (isNaN(inputnum)){
+	// 	vscode.window.showInformationMessage('result: input error');
+	// 	return;
+	// }
+	// const outputtxt = '0x' + inputnum.toString(16) + ' ' + inputnum.toString(10) + " 0b" + inputnum.toString(2);
+	const outputtxt = formatNum(inputnum);
 	vscode.window.showInformationMessage('result:' + outputtxt);
+}
+
+function formatNum(inputnum: number) {
+	let outputtxt : string;
+	if (isNaN(inputnum)){
+		outputtxt = 'input error';
+		return outputtxt;
+	}
+	outputtxt = '0x' + inputnum.toString(16) + ' ' + inputnum.toString(10) + " 0b" + inputnum.toString(2);
+	return outputtxt;
 }
 // This method is called when your extension is deactivated
 export function deactivate() {}
