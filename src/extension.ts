@@ -31,12 +31,14 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	let numconv = vscode.commands.registerCommand('numconversion.numconv', async () => {
-
-		// 引数を取る
-		const value = await vscode.window.showInputBox({
-			prompt: '引数を入力してください',
-			placeHolder: '例: hello world'
-		});
+		// 選択情報を取得
+        let editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor!');
+            return; // 編集中のテキストエディタがない場合は処理を終了
+        }
+        let selection = editor.selection;
+        let value = editor.document.getText(selection);
 
 		// 文字列が入力されている場合
 		if(typeof value === "string"){
