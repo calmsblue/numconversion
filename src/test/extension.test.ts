@@ -1,4 +1,5 @@
 import * as assert from 'assert';
+import * as sinon from 'sinon';
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
@@ -47,7 +48,6 @@ suite('Extension Test Suite', () => {
         const input = "0x1A";
         // Act
         const result = myExtension.inputNum(input);
-
         // Assert
         assert.strictEqual(result, 26);
         });
@@ -57,7 +57,6 @@ suite('Extension Test Suite', () => {
         const input = "0b1010";
         // Act
         const result = myExtension.inputNum(input);
-
         // Assert
         assert.strictEqual(result, 10);
         });
@@ -67,7 +66,6 @@ suite('Extension Test Suite', () => {
         const input = "123";
         // Act
         const result = myExtension.inputNum(input);
-
         // Assert
         assert.strictEqual(result, 123);
         });
@@ -77,7 +75,6 @@ suite('Extension Test Suite', () => {
         const input = "";
         // Act
         const result = myExtension.inputNum(input);
-
         // Assert
         assert.strictEqual(result, NaN);
         });
@@ -88,10 +85,37 @@ suite('Extension Test Suite', () => {
         const input = "-20";
         // Act
         const result = myExtension.inputNum(input);
-
         // Assert
         assert.strictEqual(result, NaN);
         });
+    });
+});
 
+suite('numconv test suite', () => {
+    test('Valid input: dec number 42', async () => {
+        // Arrange
+
+        // スパイ化して、showInformationMessageが呼ばれたかどうかを確認する
+        const showInformationMessageSpy = sinon.spy(vscode.window, 'showInformationMessage');
+
+        // 仮のテキストドキュメントを作成
+        const document = await vscode.workspace.openTextDocument({
+            content: '42',
+        });
+        const editor = await vscode.window.showTextDocument(document);
+        // テキストエディタで選択されたテキストを設定
+        editor.selection = new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 5));
+
+        // Act
+        // コマンドを実行
+        await vscode.commands.executeCommand('numconversion.numconv');
+
+        // Assert
+        // コンソールに出力されたかを確認
+        assert.strictEqual(showInformationMessageSpy.calledOnce, true); // showInformationMessage で表示されたメッセージ数を確認
+        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:0x2a 42 0b101010'); // 正しいテキストが表示されたかを確認
+
+        // スパイをリセット
+        showInformationMessageSpy.restore();
     });
 });
