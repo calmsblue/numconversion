@@ -92,29 +92,113 @@ suite('Extension Test Suite', () => {
 });
 
 suite('numconv test suite', () => {
-    test('Valid input: dec number 42', async () => {
+    // test('Valid input: dec number 42', async () => {
+    test('Valid input: hex string "0x1A"', async () => {
         // Arrange
-
         // スパイ化して、showInformationMessageが呼ばれたかどうかを確認する
         const showInformationMessageSpy = sinon.spy(vscode.window, 'showInformationMessage');
-
         // 仮のテキストドキュメントを作成
         const document = await vscode.workspace.openTextDocument({
-            content: '42',
+            content: '0x1A',
         });
         const editor = await vscode.window.showTextDocument(document);
         // テキストエディタで選択されたテキストを設定
         editor.selection = new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 5));
 
         // Act
-        // コマンドを実行
         await vscode.commands.executeCommand('numconversion.numconv');
 
         // Assert
-        // コンソールに出力されたかを確認
         assert.strictEqual(showInformationMessageSpy.calledOnce, true); // showInformationMessage で表示されたメッセージ数を確認
-        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:0x2a 42 0b101010'); // 正しいテキストが表示されたかを確認
+        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:0x1a 26 0b11010'); // 正しいテキストが表示されたかを確認
+        // スパイをリセット
+        showInformationMessageSpy.restore();
+    });
 
+    test('Valid input: bin string "0b1010"', async () => {
+        // Arrange
+        // スパイ化して、showInformationMessageが呼ばれたかどうかを確認する
+        const showInformationMessageSpy = sinon.spy(vscode.window, 'showInformationMessage');
+        // 仮のテキストドキュメントを作成
+        const document = await vscode.workspace.openTextDocument({
+            content: '0b1010',
+        });
+        const editor = await vscode.window.showTextDocument(document);
+        // テキストエディタで選択されたテキストを設定
+        editor.selection = new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 6));
+
+        // Act
+        await vscode.commands.executeCommand('numconversion.numconv');
+
+        // Assert
+        assert.strictEqual(showInformationMessageSpy.calledOnce, true); // showInformationMessage で表示されたメッセージ数を確認
+        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:0xa 10 0b1010'); // 正しいテキストが表示されたかを確認
+        // スパイをリセット
+        showInformationMessageSpy.restore();
+    });
+
+    test('Valid input: dec string "123"', async () => {
+        // Arrange
+        // スパイ化して、showInformationMessageが呼ばれたかどうかを確認する
+        const showInformationMessageSpy = sinon.spy(vscode.window, 'showInformationMessage');
+        // 仮のテキストドキュメントを作成
+        const document = await vscode.workspace.openTextDocument({
+            content: '123',
+        });
+        const editor = await vscode.window.showTextDocument(document);
+        // テキストエディタで選択されたテキストを設定
+        editor.selection = new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 5));
+
+        // Act
+        await vscode.commands.executeCommand('numconversion.numconv');
+
+        // Assert
+        assert.strictEqual(showInformationMessageSpy.calledOnce, true); // showInformationMessage で表示されたメッセージ数を確認
+        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:0x7b 123 0b1111011'); // 正しいテキストが表示されたかを確認
+        // スパイをリセット
+        showInformationMessageSpy.restore();
+    });
+
+    test('Invalid input: string ""', async () => {
+        // Arrange
+        // スパイ化して、showInformationMessageが呼ばれたかどうかを確認する
+        const showInformationMessageSpy = sinon.spy(vscode.window, 'showInformationMessage');
+        // 仮のテキストドキュメントを作成
+        const document = await vscode.workspace.openTextDocument({
+            content: '',
+        });
+        const editor = await vscode.window.showTextDocument(document);
+        // テキストエディタで選択されたテキストを設定
+        editor.selection = new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 5));
+
+        // Act
+        await vscode.commands.executeCommand('numconversion.numconv');
+
+        // Assert
+        assert.strictEqual(showInformationMessageSpy.calledOnce, true); // showInformationMessage で表示されたメッセージ数を確認
+        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:input error'); // 正しいテキストが表示されたかを確認
+        // スパイをリセット
+        showInformationMessageSpy.restore();
+    });
+
+    test('Invalid input: string "-20"', async () => {
+        // Arrange
+        // スパイ化して、showInformationMessageが呼ばれたかどうかを確認する
+        const showInformationMessageSpy = sinon.spy(vscode.window, 'showInformationMessage');
+        // 仮のテキストドキュメントを作成
+        const document = await vscode.workspace.openTextDocument({
+            content: '-20',
+        });
+        const editor = await vscode.window.showTextDocument(document);
+        // テキストエディタで選択されたテキストを設定
+        editor.selection = new vscode.Selection(new vscode.Position(0, 0), new vscode.Position(0, 5));
+
+        // Act
+        await vscode.commands.executeCommand('numconversion.numconv');
+
+        // Assert
+        assert.strictEqual(showInformationMessageSpy.calledOnce, true); // showInformationMessage で表示されたメッセージ数を確認
+        assert.strictEqual(showInformationMessageSpy.getCall(0).args[0], 'result:input error'); // 正しいテキストが表示されたかを確認
         // スパイをリセット
         showInformationMessageSpy.restore();
     });
