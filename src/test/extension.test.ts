@@ -18,8 +18,7 @@ suite('Extension Test Suite', () => {
 		assert.strictEqual(myExtension.inputNum('20'), 20);
 		assert.strictEqual(myExtension.inputNum('0x20'), 0x20);
 		assert.strictEqual(myExtension.inputNum('0b10'), 0b10);
-	}
-	)
+	});
 });
 
 suite('Extension Test Suite', () => {
@@ -44,37 +43,52 @@ suite('Extension Test Suite', () => {
 
     suite('inputNum test suite', () => {
         test('Valid input: hex string "0x1A"', () => {
+        // Arrange
         const input = "0x1A";
+        // Act
         const result = myExtension.inputNum(input);
+
         // Assert
         assert.strictEqual(result, 26);
         });
     
         test('Valid input: bin string "0b1010"', () => {
+        // Arrange
         const input = "0b1010";
+        // Act
         const result = myExtension.inputNum(input);
+
         // Assert
         assert.strictEqual(result, 10);
         });
     
         test('Valid input: dec string "123"', () => {
+        // Arrange
         const input = "123";
+        // Act
         const result = myExtension.inputNum(input);
+
         // Assert
         assert.strictEqual(result, 123);
         });
 
         test('Invalid input: string ""', () => {
+        // Arrange
         const input = "";
+        // Act
         const result = myExtension.inputNum(input);
+
         // Assert
         assert.strictEqual(result, NaN);
         });
 
         // TODO:この挙動でええんかいな
         test('Invalid input: string "-20"', () => {
+        // Arrange
         const input = "-20";
+        // Act
         const result = myExtension.inputNum(input);
+
         // Assert
         assert.strictEqual(result, NaN);
         });

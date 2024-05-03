@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		// 文字列が入力されている場合
-		if(typeof value == "string"){
+		if(typeof value === "string"){
 			const num = inputNum(value);
 			outputNum(num);
 		}
@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 
 		// 文字列が入力されている場合
-		if(typeof value == "string"){
+		if(typeof value === "string"){
 			const num = inputNum(value);
 			outputNum(num);
 		}
@@ -80,24 +80,26 @@ export function inputNum(input: string):number{
 	}
 }
 
+// 変換結果を出力する
 function outputNum(inputnum: number) {
-	// if (isNaN(inputnum)){
-	// 	vscode.window.showInformationMessage('result: input error');
-	// 	return;
-	// }
-	// const outputtxt = '0x' + inputnum.toString(16) + ' ' + inputnum.toString(10) + " 0b" + inputnum.toString(2);
+	// 出力文字列を取得
 	const outputtxt = formatNum(inputnum);
+	// 右下からポップアップ
 	vscode.window.showInformationMessage('result:' + outputtxt);
 }
 
+// 入力値を出力用にフォーマットする
 export function formatNum(inputnum: number) {
 	let outputtxt : string;
+	// 入力値不正？
 	if (isNaN(inputnum)){
 		outputtxt = 'input error';
 		return outputtxt;
 	}
+
 	outputtxt = '0x' + inputnum.toString(16) + ' ' + inputnum.toString(10) + " 0b" + inputnum.toString(2);
 	return outputtxt;
 }
+
 // This method is called when your extension is deactivated
 export function deactivate() {}
