@@ -30,8 +30,23 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	let numconv = vscode.commands.registerCommand('numconversion.numconv', async () => {
+
+		// 引数を取る
+		const value = await vscode.window.showInputBox({
+			prompt: '引数を入力してください',
+			placeHolder: '例: hello world'
+		});
+
+		// 文字列が入力されている場合
+		if(typeof value == "string"){
+			const num = inputNum(value);
+			outputNum(num);
+		}
+	});
 
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(numconv);
 }
 
 function hasLeading0x(hexString: string): boolean {

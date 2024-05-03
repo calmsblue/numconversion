@@ -16,6 +16,10 @@
       {
         "command": "numconversion.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "numconversion.numconv",
+        "title": "numconv"
       }
     ]
   },
